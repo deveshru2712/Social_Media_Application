@@ -21,6 +21,12 @@ export const signup = async (req, res) => {
       return res.status(400).json({ error: "Email already taken" });
     }
 
+    if (password.length < 6) {
+      return res
+        .status(400)
+        .json({ error: "Password must be at least 6 character" });
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -43,6 +49,36 @@ export const signup = async (req, res) => {
     }
   } catch (error) {
     console.log("Error in signup controllers:", error.message);
+    res.status(400).json({ error: "Internal server error " });
+  }
+};
+
+export const login = async (req, res) => {
+  try {
+    const { userName, password } = req.body;
+
+    const user = await User.findOne({ userName });
+    if (!user) {
+      return res.status(400).json({
+        error: "This userName is not associated with any account",
+      });
+    }
+
+    const checkPassword = await bcrypt.compare(password, user?.password || "");
+    if (!checkPassword) {
+      return res.status(400).json({
+        error: "Incorrect password !",
+      });
+    }
+
+    genToken(user._id, res);
+    res.status(200).json({
+      _id: user._id,
+      userName: user.userName,
+      email: user.email,
+    });
+  } catch (error) {
+    console.log("Error in login controllers:", error.message);
     res.status(400).json({ error: "Internal server error " });
   }
 };
