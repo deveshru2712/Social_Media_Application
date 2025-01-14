@@ -4,16 +4,16 @@ import genToken from "../Utils/genToken.js";
 
 export const signup = async (req, res) => {
   try {
-    const { fullName, username, email, password } = req.body;
+    const { fullName, userName, email, password } = req.body;
 
     const emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    if (emailRegex.test(email)) {
+    if (!emailRegex.test(email)) {
       return res.status(400).json({ error: "Invalid email format" });
     }
 
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ userName });
     if (existingUser) {
-      return res.status(400).json({ error: "Username already taken" });
+      return res.status(400).json({ error: "UserName already taken" });
     }
 
     const existingEmail = await User.findOne({ email });
@@ -26,7 +26,7 @@ export const signup = async (req, res) => {
 
     const newUser = await User.create({
       fullName,
-      username,
+      userName,
       email,
       password: hashedPassword,
     });
