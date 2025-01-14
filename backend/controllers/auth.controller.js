@@ -82,3 +82,15 @@ export const login = async (req, res) => {
     res.status(400).json({ error: "Internal server error " });
   }
 };
+
+export const logout = async (req, res) => {
+  try {
+    res.cookie("auth", "", { maxAge: 0 });
+    res.status(200).json({
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    console.log("Error in login controllers:", error.message);
+    res.status(400).json({ error: "Internal server error " });
+  }
+};
