@@ -20,6 +20,29 @@ export const getUserProfile = async (req, res) => {
 
 export const getSuggestedUserProfile = async (req, res) => {
   try {
+    const userId = req.user._id;
+    const followedUser = await User.findById(userId).select("following");
+
+    const user = await User.aggregate([
+      {
+        $match: {
+          _id: { $ne: userId }, // this one filet out the userId of the current user itself
+        },
+      },
+      { $sample: { size: 10 } },
+    ]);
+
+    const filteredUser = user.filter(
+      (users) => !followedUser.following.includes(users._id)
+    );
+
+    const suggestedUsers = filteredUser.slice(0, 4);
+
+    suggestedUsers.forEach((element) => {
+      element.password = null;
+    });
+
+    res.status(200).json(suggestedUsers);
   } catch (error) {
     console.log(
       "Error in get Suggested User Profile  controllers:",
