@@ -132,3 +132,22 @@ export const likeAndUnlikePost = async (req, res) => {
     res.status(500).json({ error: "Internal server error " });
   }
 };
+
+export const getAllPost = async (req, res) => {
+  try {
+    //sort({ createdAt: -1 })-> this returns the latest post at the top
+
+    // populate -> this returns the user so that we can fetch necessary info of the user
+    const posts = await Post.find()
+      .sort({ createdAt: -1 })
+      .populate({ path: "user", select: "-password" })
+      .populate({ path: "comments.user", select: "-password" });
+    if (posts.length == 0) {
+      return res.status(200).json([]);
+    }
+    res.status(200).json(posts);
+  } catch (error) {
+    console.log("Error in comment on post controllers:", error.message);
+    res.status(500).json({ error: "Internal server error " });
+  }
+};
