@@ -108,17 +108,24 @@ export const likeAndUnlikePost = async (req, res) => {
     if (post.likes.includes(userId)) {
       await Post.findByIdAndUpdate(id, { $pull: { likes: userId } });
 
+      //  update it in the user's liked post array
+
       const newNotification = await Notification.create({
         from: userId,
         to: post.user,
         type: "unlike",
       });
 
+      await User.findByIdAndUpdate(userId, { $pull: { likedPosts: id } });
+
       res.status(200).json({ message: "post unliked" });
     } else {
       post.likes.push(userId);
 
+      await User.findByIdAndUpdate(userId, { $push: { likedPosts: id } });
+
       await post.save();
+
       const newNotification = await Notification.create({
         from: userId,
         to: post.user,
@@ -128,7 +135,7 @@ export const likeAndUnlikePost = async (req, res) => {
       res.status(200).json({ message: "post like" });
     }
   } catch (error) {
-    console.log("Error in comment on post controllers:", error.message);
+    console.log("Error in like and unlike controllers:", error.message);
     res.status(500).json({ error: "Internal server error " });
   }
 };
@@ -147,7 +154,36 @@ export const getAllPost = async (req, res) => {
     }
     res.status(200).json(posts);
   } catch (error) {
-    console.log("Error in comment on post controllers:", error.message);
+    console.log("Error in get all post controllers:", error.message);
+    res.status(500).json({ error: "Internal server error " });
+  }
+};
+
+export const getLikedPosts = async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(400).json({ error: "User not found" });
+    }
+    const likedPosts = await Post.find({
+      _id: { $in: user.likedPosts },
+    })
+      .populate({
+        path: "user",
+        select: "-password",
+      })
+      .populate({
+        path: "comments.user",
+        select: "-password",
+      });
+
+    return res.status(200).json(likedPosts);
+  } catch (error) {
+    console.log(
+      "Error in comment on get all like post controllers:",
+      error.message
+    );
     res.status(500).json({ error: "Internal server error " });
   }
 };
