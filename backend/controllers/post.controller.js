@@ -222,9 +222,9 @@ export const getFollowingPost = async (req, res) => {
 };
 
 export const getUserPost = async (req, res) => {
-  const { userName } = req.params;
+  const { username } = req.params;
   try {
-    const user = await User.findOne({ userName });
+    const user = await User.findOne({ username });
     if (!user) {
       return res.status(400).json({
         error: "User not found",

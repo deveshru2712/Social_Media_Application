@@ -4,9 +4,9 @@ import genToken from "../Utils/genToken.js";
 
 export const signup = async (req, res) => {
   try {
-    const { fullName, userName, email, password } = req.body;
+    const { fullName, username, email, password } = req.body;
 
-    if (!fullName || !userName || !email || !password) {
+    if (!fullName || !username || !email || !password) {
       return res.status(400).json({ error: "Please provide all inputs" });
     }
 
@@ -15,9 +15,9 @@ export const signup = async (req, res) => {
       return res.status(400).json({ error: "Invalid email format" });
     }
 
-    const existingUser = await User.findOne({ userName });
+    const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.status(400).json({ error: "UserName already taken" });
+      return res.status(400).json({ error: "username already taken" });
     }
 
     const existingEmail = await User.findOne({ email });
@@ -36,7 +36,7 @@ export const signup = async (req, res) => {
 
     const newUser = await User.create({
       fullName,
-      userName,
+      username,
       email,
       password: hashedPassword,
     });
@@ -59,16 +59,16 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const { userName, password } = req.body;
+    const { username, password } = req.body;
 
-    if (!userName || !password) {
+    if (!username || !password) {
       return res.status(400).json({ error: "Please provide all inputs" });
     }
 
-    const user = await User.findOne({ userName });
+    const user = await User.findOne({ username });
     if (!user) {
       return res.status(400).json({
-        error: "This userName is not associated with any account",
+        error: "This username is not associated with any account",
       });
     }
 
@@ -82,7 +82,7 @@ export const login = async (req, res) => {
     genToken(user._id, res);
     res.status(200).json({
       _id: user._id,
-      userName: user.userName,
+      username: user.username,
       email: user.email,
     });
   } catch (error) {

@@ -4,9 +4,9 @@ import bcrypt from "bcryptjs";
 import { v2 as cloudinary } from "cloudinary";
 
 export const getUserProfile = async (req, res) => {
-  const { userName } = req.params;
+  const { username } = req.params;
   try {
-    const user = await User.findOne({ userName }).select("-password");
+    const user = await User.findOne({ username }).select("-password");
     if (!user) {
       return res.status(404).json({
         error: "User not found",
@@ -108,7 +108,7 @@ export const updateUser = async (req, res) => {
   try {
     const {
       fullName,
-      userName,
+      username,
       email,
       currentPassword,
       newPassword,
@@ -186,7 +186,7 @@ export const updateUser = async (req, res) => {
 
     user.fullName = fullName || user.fullName;
     user.email = email || user.email;
-    user.userName = userName || user.userName;
+    user.username = username || user.username;
     user.Bio = Bio || user.Bio;
     user.link = link || user.link;
     user.profileImg = profileImg || user.profileImg;

@@ -23,7 +23,7 @@ router.get("/getLikedPosts/:id", protectRoute, getLikedPosts);
 router.get("/followingPosts", protectRoute, getFollowingPost);
 
 // fetch the user's post
-router.get("/user/:userName", protectRoute, getUserPost);
+router.get("/user/:username", protectRoute, getUserPost);
 
 //create post
 router.post("/create", protectRoute, createPost);
