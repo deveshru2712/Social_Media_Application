@@ -6,13 +6,15 @@ import XSvg from "../../../Components/Svg/X";
 
 import { FaUser } from "react-icons/fa";
 import { MdPassword } from "react-icons/md";
-import { useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+
+  const queryClient = useQueryClient();
 
   const {
     mutate: LoginMutation,
@@ -40,7 +42,9 @@ const LoginPage = () => {
       }
     },
     onSuccess: () => {
-      toast.success("Login successfully");
+      //refetch the authUser in order to update the client information
+
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
     },
   });
 

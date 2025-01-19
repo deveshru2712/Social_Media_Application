@@ -16,25 +16,29 @@ import LoadingSpinner from "./Components/Common/LoadingSpinner";
 const App = () => {
   // useQuery is used to get the logged in user info
 
-  const {
-    data: authUser,
-    isLoading,
-    error,
-    isError,
-  } = useQuery({
+  // the default behaviour of useQuery is to always make the fetch request
+
+  // we have use queryKey so that we can use it later on
+
+  const { data: authUser, isLoading } = useQuery({
     queryKey: ["authUser"],
     queryFn: async () => {
       try {
         const res = await fetch("/api/auth/me");
         const data = await res.json();
 
-        if (!res.ok) throw new Error(data.error || "Something went wrong");
+        if (data.error) return null;
+        if (!res.ok) {
+          throw new Error(data.error || "Something went wrong");
+        }
         console.log("authUser is here:", data);
         return data;
       } catch (error) {
         throw new Error(error);
       }
     },
+    // i have passed here retry false in order to quickly get over with the loading spinner
+    retry: false,
   });
 
   if (isLoading) {
