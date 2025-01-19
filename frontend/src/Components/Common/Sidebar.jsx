@@ -32,6 +32,9 @@ const Sidebar = () => {
     onSuccess: () => {
       toast.success("User logout successfully");
     },
+    onError: () => {
+      toast.error("Logout failed");
+    },
   });
 
   const data = {
