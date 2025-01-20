@@ -8,10 +8,8 @@ const Posts = ({ feedType }) => {
     switch (feedType) {
       case "forYou":
         return "/api/posts/all";
-        break;
       case "following":
         return "/api/posts/following";
-        break;
       default:
         return "/api/posts/all";
     }
