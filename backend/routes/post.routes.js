@@ -14,13 +14,13 @@ import {
 const router = express.Router();
 
 // fetch all posts
-router.get("/getPosts", protectRoute, getAllPost);
+router.get("/all", protectRoute, getAllPost);
 
 // fetch post liked by user
 router.get("/getLikedPosts/:id", protectRoute, getLikedPosts);
 
 //fetch the following post
-router.get("/followingPosts", protectRoute, getFollowingPost);
+router.get("/following", protectRoute, getFollowingPost);
 
 // fetch the user's post
 router.get("/user/:username", protectRoute, getUserPost);
