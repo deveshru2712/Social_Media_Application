@@ -16,7 +16,7 @@ import LoadingSpinner from "./Components/Common/LoadingSpinner";
 const App = () => {
   // useQuery is used to get the logged in user info
 
-  // the default behaviour of useQuery is to always make the fetch request
+  // the default behavior of useQuery is to always make the fetch request
 
   // we have use queryKey so that we can use it later on
 
@@ -52,7 +52,7 @@ const App = () => {
   return (
     <div className="flex max-w-6xl mx-auto">
       {/* this sidebar is a common component */}
-      <Sidebar />
+      {authUser && <Sidebar />}
       <Routes>
         <Route
           path="/"
@@ -79,7 +79,8 @@ const App = () => {
           element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
         />
       </Routes>
-      <RightPanel />
+      {authUser && <RightPanel />}
+
       <Toaster />
     </div>
   );
