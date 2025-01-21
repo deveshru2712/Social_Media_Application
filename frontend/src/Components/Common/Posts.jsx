@@ -53,9 +53,15 @@ const Posts = ({ feedType }) => {
           <PostSkeleton />
         </div>
       )}
+
+      {/* when there are no posts */}
+
       {!isLoading && !isRefetching && posts?.length === 0 && (
         <p className="text-center my-4">No posts in this tab. Switch 👻</p>
       )}
+
+      {/* displaying all the posts */}
+
       {!isLoading && !isRefetching && posts && (
         <div>
           {posts.map((post) => (

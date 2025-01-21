@@ -96,34 +96,35 @@ export const commentOnPost = async (req, res) => {
 
 export const likeAndUnlikePost = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id: postId } = req.params;
     const userId = req.user._id.toString();
 
-    const post = await Post.findById(id);
+    const post = await Post.findById(postId);
 
     if (!post) {
       return res.status(400).json({ message: "Post not found" });
     }
 
-    if (post.likes.includes(userId)) {
-      await Post.findByIdAndUpdate(id, { $pull: { likes: userId } });
+    const userLikedPost = post.likes.includes(userId);
 
-      //  update it in the user's liked post array
+    if (userLikedPost) {
+      await Post.updateOne({ _id: postId }, { $pull: { likes: userId } });
+      await User.updateOne({ _id: userId }, { $pull: { likedPosts: postId } });
+
+      const updatedLikes = post.likes.filter(
+        (id) => id.toString() !== userId.toString()
+      );
+
+      res.status(200).json({ message: "post unlike", updatedLikes });
 
       const newNotification = await Notification.create({
         from: userId,
         to: post.user,
         type: "unlike",
       });
-
-      await User.findByIdAndUpdate(userId, { $pull: { likedPosts: id } });
-
-      res.status(200).json({ message: "post unliked" });
     } else {
       post.likes.push(userId);
-
-      await User.findByIdAndUpdate(userId, { $push: { likedPosts: id } });
-
+      await User.updateOne({ _id: userId }, { $push: { likedPosts: postId } });
       await post.save();
 
       const newNotification = await Notification.create({
@@ -132,7 +133,9 @@ export const likeAndUnlikePost = async (req, res) => {
         type: "like",
       });
 
-      res.status(200).json({ message: "post like" });
+      const updatedLikes = post.likes;
+
+      res.status(200).json({ message: "post like", updatedLikes });
     }
   } catch (error) {
     console.log("Error in like and unlike controllers:", error.message);
