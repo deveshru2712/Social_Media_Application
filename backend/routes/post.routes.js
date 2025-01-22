@@ -17,7 +17,7 @@ const router = express.Router();
 router.get("/all", protectRoute, getAllPost);
 
 // fetch post liked by user
-router.get("/getLikedPosts/:id", protectRoute, getLikedPosts);
+router.get("/getLikes/:id", protectRoute, getLikedPosts);
 
 //fetch the following post
 router.get("/following", protectRoute, getFollowingPost);
