@@ -12,6 +12,8 @@ import { IoCalendarOutline } from "react-icons/io5";
 import { FaLink } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 
+import useFollow from "../../hooks/useFollow";
+
 import { useQuery } from "@tanstack/react-query";
 
 const ProfilePage = () => {
@@ -23,6 +25,10 @@ const ProfilePage = () => {
   const profileImgRef = useRef(null);
 
   const { username } = useParams();
+
+  const { follow, isPending } = useFollow();
+
+  const { data: authUser } = useQuery({ queryKey: ["authUser"] });
 
   const {
     data: userProfile,
@@ -49,7 +55,9 @@ const ProfilePage = () => {
 
   const memberSinceDate = formatMemberSinceDate(userProfile?.createdAt);
 
-  const isMyProfile = false;
+  const isMyProfile = authUser._id === userProfile?._id;
+
+  const amIFollowing = authUser?.following.includes(userProfile._id);
 
   const POSTS = 0;
 
@@ -147,9 +155,11 @@ const ProfilePage = () => {
                 {!isMyProfile && (
                   <button
                     className="btn btn-outline rounded-full btn-sm"
-                    onClick={() => alert("Followed successfully")}
+                    onClick={() => follow(userProfile?._id)}
                   >
-                    Follow
+                    {isPending && "Loading..."}
+                    {!isPending && amIFollowing && "Unfollow"}
+                    {!isPending && !amIFollowing && "Follow"}
                   </button>
                 )}
                 {(coverImg || profileImg) && (
