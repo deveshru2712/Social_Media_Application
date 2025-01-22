@@ -12,6 +12,7 @@ import { IoCalendarOutline } from "react-icons/io5";
 import { FaLink } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 
+import useUpdate from "../../hooks/useUpdate";
 import useFollow from "../../hooks/useFollow";
 
 import { useQuery } from "@tanstack/react-query";
@@ -53,11 +54,13 @@ const ProfilePage = () => {
     },
   });
 
+  const { updateProfile, isUpdatingProfile } = useUpdate();
+
   const memberSinceDate = formatMemberSinceDate(userProfile?.createdAt);
 
   const isMyProfile = authUser._id === userProfile?._id;
 
-  const amIFollowing = authUser?.following.includes(userProfile._id);
+  const amIFollowing = authUser?.following.includes(userProfile?._id);
 
   const POSTS = 0;
 
@@ -151,7 +154,7 @@ const ProfilePage = () => {
                 </div>
               </div>
               <div className="flex justify-end px-4 mt-5">
-                {isMyProfile && <EditProfileModal />}
+                {isMyProfile && <EditProfileModal authUser={authUser} />}
                 {!isMyProfile && (
                   <button
                     className="btn btn-outline rounded-full btn-sm"
@@ -165,9 +168,9 @@ const ProfilePage = () => {
                 {(coverImg || profileImg) && (
                   <button
                     className="btn btn-primary rounded-full btn-sm text-white px-4 ml-2"
-                    onClick={() => alert("Profile updated successfully")}
+                    onClick={() => updateProfile({ coverImg, profileImg })}
                   >
-                    Update
+                    {isUpdatingProfile ? "Loading.." : "Update"}
                   </button>
                 )}
               </div>
