@@ -117,11 +117,10 @@ export const likeAndUnlikePost = async (req, res) => {
 
       res.status(200).json({ message: "post unlike", updatedLikes });
 
-      const newNotification = await Notification.create({
-        from: userId,
-        to: post.user,
-        type: "unlike",
-      });
+      // const newNotification = await Notification.create({
+      //   from: userId,
+      //   to: post.user,
+      // });
     } else {
       post.likes.push(userId);
       await User.updateOne({ _id: userId }, { $push: { likedPosts: postId } });
