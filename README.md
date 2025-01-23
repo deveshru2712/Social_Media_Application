@@ -47,7 +47,7 @@ npm run dev
 ```
 
 ## 🔐 Environment Variables
-Create `.env` files in backend and frontend directories with:
+Create `.env` files in the root with:
 - `MONGODB_URI`
 - `JWT_SECRET`
 - `PORT`
