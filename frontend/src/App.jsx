@@ -1,12 +1,14 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
-import SignUpPage from "./Pages/Auth/Signup/SignUpPage";
-import LoginPage from "./Pages/Auth/Login/LoginPage";
-import HomePage from "./Pages/Home/HomePage";
-import NotificationPage from "./Pages/Notification/NotificationPage";
-import ProfilePage from "./Pages/Profile/ProfilePage";
+const SignUpPage = React.lazy(() => import("./Pages/Auth/Signup/SignUpPage"));
+const LoginPage = React.lazy(() => import("./Pages/Auth/Login/LoginPage"));
+const HomePage = React.lazy(() => import("./Pages/Home/HomePage"));
+const NotificationPage = React.lazy(() =>
+  import("./Pages/Notification/NotificationPage")
+);
+const ProfilePage = React.lazy(() => import("./Pages/Profile/ProfilePage"));
 
 import Sidebar from "./Components/Common/Sidebar";
 import RightPanel from "./Components/Common/RightPanel";
@@ -31,7 +33,7 @@ const App = () => {
         if (!res.ok) {
           throw new Error(data.error || "Something went wrong");
         }
-        console.log("authUser is here:", data);
+        // console.log("authUser is here:", data);
         return data;
       } catch (error) {
         throw new Error(error);
@@ -56,27 +58,67 @@ const App = () => {
       <Routes>
         <Route
           path="/"
-          element={authUser ? <HomePage /> : <Navigate to="/login" />}
+          element={
+            authUser ? (
+              <Suspense fallback={<LoadingSpinner />}>
+                <HomePage />
+              </Suspense>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
 
         <Route
           path="/login"
-          element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+          element={
+            !authUser ? (
+              <Suspense fallback={<LoadingSpinner />}>
+                <LoginPage />
+              </Suspense>
+            ) : (
+              <Navigate to="/" />
+            )
+          }
         />
 
         <Route
           path="/signup"
-          element={!authUser ? <SignUpPage /> : <Navigate to="/" />}
+          element={
+            !authUser ? (
+              <Suspense fallback={<LoadingSpinner />}>
+                <SignUpPage />{" "}
+              </Suspense>
+            ) : (
+              <Navigate to="/" />
+            )
+          }
         />
 
         <Route
           path="/notifications"
-          element={authUser ? <NotificationPage /> : <Navigate to="/login" />}
+          element={
+            authUser ? (
+              <Suspense fallback={<LoadingSpinner />}>
+                <NotificationPage />
+              </Suspense>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
 
         <Route
           path="/profile/:username"
-          element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
+          element={
+            authUser ? (
+              <Suspense fallback={<LoadingSpinner />}>
+                <ProfilePage />
+              </Suspense>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
       </Routes>
       {authUser && <RightPanel />}
