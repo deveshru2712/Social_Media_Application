@@ -51,6 +51,10 @@ Create `.env` files in backend and frontend directories with:
 - `MONGODB_URI`
 - `JWT_SECRET`
 - `PORT`
+- `NODE_ENV`
+- `CLOUDINARY_CLOUD_NAME`
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
 
 ## 📦 Dependencies
 - React Router
