@@ -59,7 +59,7 @@ Create `.env` files in backend and frontend directories with:
 - Bcrypt
 - JWT
 
-###Build
+## 🏗️ Build
 In the root directory
 ```bash
 npm run build
