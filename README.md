@@ -1,7 +1,66 @@
-![alt text](image.png)
+# Social Media Application
 
-1. Delete a selected notification
+## 🚀 Project Overview
+A full-stack social media application built with modern web technologies.
 
-2. Add liking the comment functionality
+## 🛠 Tech Stack
+- Frontend: React.js
+- Backend: Node.js, Express.js
+- Database: MongoDB
+- State Management: React Query
+- Authentication: JWT
+- Styling: Tailwind CSS
 
-3. Instead of invalidating for comments use caching instead
+## ✨ Features
+- User Authentication (Signup/Login)
+- Create and Share Posts
+- Follow/Unfollow Users
+- Like and Comment on Posts
+- Real-time Notifications
+- User Profile Management
+
+## 🔧 Prerequisites
+- Node.js (v18+)
+- npm 
+- MongoDB
+
+## 🛠 Installation
+
+### Clone the Repository
+```bash
+git clone git@github.com:deveshru2712/Social_Media_Application.git
+cd Social_Media_Application
+```
+
+### Backend Setup
+```bash
+npm install
+npm run dev
+
+```
+
+### Frontend Setup
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+## 🔐 Environment Variables
+Create `.env` files in backend and frontend directories with:
+- `MONGODB_URI`
+- `JWT_SECRET`
+- `PORT`
+
+## 📦 Dependencies
+- React Router
+- Tanstack React Query
+- Mongoose
+- Bcrypt
+- JWT
+
+###Build
+In the root directory
+```bash
+npm run build
+```
