@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
-const SignUpPage = React.lazy(() => import("./Pages/Auth/Signup/SignUpPage"));
+const SignUpPage = React.lazy(() => import("./Pages/Auth/SignUp/SignUpPage"));
 const LoginPage = React.lazy(() => import("./Pages/Auth/Login/LoginPage"));
 const HomePage = React.lazy(() => import("./Pages/Home/HomePage"));
 const NotificationPage = React.lazy(() =>
