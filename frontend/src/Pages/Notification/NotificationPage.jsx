@@ -9,7 +9,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IoTrash } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
-import { Error } from "mongoose";
 import useNotification from "../../hooks/useNotification";
 
 const NotificationPage = () => {
